@@ -43,9 +43,10 @@ function App() {
         <div className="search-container">
           <input 
             type="text"
-            placeholder="Search pokemon"
+            placeholder="Search for a Pokemon..."
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && setPokemonToSearch(inputText)}
           />
           <button onClick={() => setPokemonToSearch(inputText)}>Search</button>
         </div>
