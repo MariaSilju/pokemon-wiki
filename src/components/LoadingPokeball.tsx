@@ -1,5 +1,5 @@
 import Lottie from 'lottie-react';
-import pokeball from '../assets/lottie/Pokeball.json';
+import pokeball from '../assets/lottie/pokeball.json';
 
 interface LoadingPokeballProps {
   size?: number;
