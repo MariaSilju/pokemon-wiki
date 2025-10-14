@@ -71,6 +71,8 @@ function App() {
       const searchTerm = suggestion || inputText
       if (searchTerm) {
         setPokemonToSearch(searchTerm)
+      } else {
+        setPokemonToSearch('')
       }
     }
   }
@@ -99,12 +101,15 @@ function App() {
                 </div>
               )}
             </div>
-            <button onClick={() => setPokemonToSearch(suggestion || inputText)}>Search</button>
+            <button onClick={() => {
+              const searchTerm = suggestion || inputText
+              setPokemonToSearch(searchTerm || '')
+            }}>Search</button>
           </div>
         </div>
       </div>
       
-      {searchLoading && <LoadingPokeball />} 
+      {searchLoading && <LoadingPokeball text={`Searching for ${pokemonToSearch}...`} />} 
       {searchError && <ErrorMessage message={"Couldn't find Pokémon. Please try again"} />}
       {searchData && (
         <div className="pokemon-grid">
