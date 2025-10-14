@@ -1,5 +1,6 @@
 import styles from './PokemonCard.module.css';
 import type { Pokemon } from '../types/pokemon';
+import { getTypeStyles } from '../utils/typeColors';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -16,7 +17,11 @@ function PokemonCard({ pokemon, onClick }: PokemonCardProps) {
       <div className={styles.pokemonId}>#{pokemon.id.toString().padStart(3, '0')}</div>
       <div className={styles.types}>
         {pokemon.types.map((type, index) => (
-          <span key={index} className={`${styles.type} ${type.type.name}`}>
+          <span 
+            key={index} 
+            className={styles.type}
+            style={getTypeStyles(type.type.name)}
+          >
             {type.type.name}
           </span>
         ))}
