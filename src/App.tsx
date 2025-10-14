@@ -12,7 +12,7 @@ function App() {
   const [inputText, setInputText] = useState('')
   const [pokemonToSearch, setPokemonToSearch] = useState('')
 
-  const initialPokemonIds = [1, 4, 7, 25, 39, 52, 104, 132, 143, 150]
+  const initialPokemonIds = [1, 4, 7, 25, 39, 52, 104, 132, 143, 150, 3, 6, 9, 12, 24, 29, 32, 35, 36, 42, 58, 63, 74, 87, 92, 99, 102, 108, 115, 117, 122, 133, 144, 149]
 
 
   const {data: searchData, error: searchError, isLoading: searchLoading} = useQuery({
@@ -36,17 +36,19 @@ function App() {
 
   return (
     <>
-      <div className="image-container">
-        <img  src={gjensidigmon} alt="gjensidigmon"/>
-      </div>
-      <div className="search-container">
-        <input 
-          type="text"
-          placeholder="Search pokemon"
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-        />
-        <button onClick={() => setPokemonToSearch(inputText)}>Search</button>
+      <div className="header-container">
+        <div className="image-container">
+          <img  src={gjensidigmon} alt="gjensidigmon"/>
+        </div>
+        <div className="search-container">
+          <input 
+            type="text"
+            placeholder="Search pokemon"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+          />
+          <button onClick={() => setPokemonToSearch(inputText)}>Search</button>
+        </div>
       </div>
       
       {/* Search Results */}
