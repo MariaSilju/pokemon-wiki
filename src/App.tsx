@@ -9,6 +9,7 @@ import PokemonCard from './components/PokemonCard'
 import ErrorMessage from './components/ErrorMessage'
 import Modal from './components/Modal'
 import type { Pokemon } from './types/pokemon'
+import LoadingPokeball from './components/LoadingPokeball'
 
 function App() {
 
@@ -64,7 +65,7 @@ function App() {
         </div>
       </div>
       
-      {searchLoading && <h3>Searching for Pokémon...</h3>} 
+      {searchLoading && <LoadingPokeball />} 
       {searchError && <ErrorMessage message={"Couldn't find Pokémon. Please try again"} />}
       {searchData && (
         <div className="pokemon-grid">
@@ -74,7 +75,7 @@ function App() {
       
       {!pokemonToSearch && (
         <>
-          {isLoading && <h3>Loading Pokémon...</h3>}
+          {isLoading && <LoadingPokeball text="Loading Pokémon..." />}
           {isError && !isLoading && (
             <div style={{ textAlign: 'center', margin: '10px 0', color: '#666' }}>
               <small>Some Pokémon failed to load</small>
@@ -87,9 +88,9 @@ function App() {
                   <PokemonCard key={p.id} pokemon={p} onClick={() => setSelectedPokemon(p)} />
                 ))}
               </div>
-              {hasNextPage && !isFetchingNextPage && (
+              {hasNextPage && (
                 <div style={{ textAlign: 'center', margin: '20px 0' }}>
-                  <button 
+                  <button
                     onClick={() => fetchNextPage()}
                     disabled={isFetchingNextPage}
                     style={{
