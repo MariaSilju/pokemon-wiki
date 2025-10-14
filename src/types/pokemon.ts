@@ -1,3 +1,9 @@
+export interface PokemonType {
+  type: {
+    name: string;
+  }
+}
+
 export interface Pokemon {
   name: string;
   id: number;
@@ -12,9 +18,5 @@ export interface Pokemon {
       };
     };
   };
-  types: {
-    type: {
-      name: string;
-    };
-  }[];
+  types: PokemonType[];
 }

@@ -15,7 +15,7 @@ function PokemonCard({ pokemon, onClick }: PokemonCardProps) {
       <h1 className={styles.title}>{pokemon.name}</h1>
       <div className={styles.pokemonId}>#{pokemon.id.toString().padStart(3, '0')}</div>
       <div className={styles.types}>
-        {pokemon.types.map((type: { type: { name: string } }, index: number) => (
+        {pokemon.types.map((type, index) => (
           <span key={index} className={`${styles.type} ${type.type.name}`}>
             {type.type.name}
           </span>

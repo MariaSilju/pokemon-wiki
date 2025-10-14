@@ -1,6 +1,7 @@
 import styles from './Modal.module.css';
 import type { Pokemon } from '../types/pokemon';
 import PokemonStat from './PokemonStat';
+import AbilitiesStat from './AbilitiesStat';
 
 interface ModalProps {
   pokemon: Pokemon | null;
@@ -23,7 +24,7 @@ function Modal({ pokemon, onClose }: ModalProps) {
           <h2>{pokemon.name}</h2>
           <div className={styles.pokemonId}>#{pokemon.id.toString().padStart(3, '0')}</div>
           <div className={styles.types}>
-            {pokemon.types.map((type: { type: { name: string } }, index: number) => (
+            {pokemon.types.map((type, index) => (
               <span key={index} className={`${styles.type} ${type.type.name}`}>
                 {type.type.name}
               </span>
@@ -36,6 +37,7 @@ function Modal({ pokemon, onClose }: ModalProps) {
               { title: 'Weight', subtitle: `${(pokemon.weight / 10).toFixed(1)} kg` }
             ]}
           />
+          <AbilitiesStat pokemon={pokemon}/>
         </div>
       </div>
     </div>
