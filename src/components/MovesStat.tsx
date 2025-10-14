@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './MovesStat.module.css';
 import type { Pokemon } from "../types/pokemon";
+import ChevronIcon from '../assets/svg/chevron.svg';
 
 interface MovesStatProps {
   pokemon: Pokemon;
@@ -8,7 +9,7 @@ interface MovesStatProps {
 
 
 function MovesStat({ pokemon }: MovesStatProps) {
-  const [movesToShow, setMovesToShow] = useState(6);
+  const [isExpanded, setIsExpanded] = useState(false);
   
   // Get all level-up moves first
   const allLevelUpMoves = pokemon.moves
@@ -27,12 +28,12 @@ function MovesStat({ pokemon }: MovesStatProps) {
       };
     });
 
-  // Slice to show only the requested amount
-  const displayedMoves = allLevelUpMoves.slice(0, movesToShow);
-  const hasMoreMoves = allLevelUpMoves.length > movesToShow;
+  // Show either 6 moves or all moves based on expanded state
+  const displayedMoves = isExpanded ? allLevelUpMoves : allLevelUpMoves.slice(0, 6);
+  const hasMoreMoves = allLevelUpMoves.length > 6;
 
-  const loadMoreMoves = () => {
-    setMovesToShow(prev => prev + 6);
+  const toggleExpanded = () => {
+    setIsExpanded(prev => !prev);
   };
 
   return (
@@ -49,8 +50,15 @@ function MovesStat({ pokemon }: MovesStatProps) {
         ))}
       </div>
       {hasMoreMoves && (
-        <button className={styles.loadMoreButton} onClick={loadMoreMoves}>
-          Show more moves
+        <button className={styles.toggleButton} onClick={toggleExpanded}>
+          <span className={styles.buttonText}>
+            {isExpanded ? 'Collapse' : 'Load more'}
+          </span>
+          <img 
+            src={ChevronIcon} 
+            alt="chevron" 
+            className={`${styles.chevron} ${isExpanded ? styles.chevronUp : ''}`}
+          />
         </button>
       )}
     </div>
