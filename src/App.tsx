@@ -5,12 +5,15 @@ import { useQuery, useQueries } from '@tanstack/react-query'
 import getPokemon from './api/getPokemon'
 import PokemonCard from './components/PokemonCard'
 import ErrorMessage from './components/ErrorMessage'
+import Modal from './components/Modal'
+import type { Pokemon } from './types/pokemon'
 
 
 function App() {
 
   const [inputText, setInputText] = useState('')
   const [pokemonToSearch, setPokemonToSearch] = useState('')
+  const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null)
 
   const initialPokemonIds = [1, 4, 7, 25, 39, 52, 104, 132, 143, 150, 3, 6, 9, 12, 24, 29, 32, 35, 36, 42, 58, 63, 74, 87, 92, 99, 102, 108, 115, 117, 122, 133, 144, 149]
 
@@ -59,7 +62,7 @@ function App() {
       {searchError && <ErrorMessage message={"Couldn't find Pokémon. Please try again"} />}
       {searchData && (
         <div className="pokemon-grid">
-          <PokemonCard pokemon={searchData} />
+          <PokemonCard pokemon={searchData} onClick={() => setSelectedPokemon(searchData)} />
         </div>
       )}
       
@@ -71,12 +74,15 @@ function App() {
           {initialPokemon.length > 0 && (
             <div className="pokemon-grid">
               {initialPokemon.map((pokemon) => (
-                <PokemonCard key={pokemon.id} pokemon={pokemon} />
+                <PokemonCard key={pokemon.id} pokemon={pokemon} onClick={() => setSelectedPokemon(pokemon)} />
               ))}
             </div>
           )}
         </>
       )}
+      
+      {/* Modal */}
+      <Modal pokemon={selectedPokemon} onClose={() => setSelectedPokemon(null)} />
     </>
   )
 }
