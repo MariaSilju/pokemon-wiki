@@ -1,13 +1,14 @@
 import gjensidigmon from './assets/images/gjensidigmon.png'
 import './App.css'
 import { useState } from 'react'
-import { useQuery, useQueries } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import getPokemon from './api/getPokemon'
+import getAllPokemon from './api/getAllPokemon'
+import { getPokemonPage, type PokemonPage } from './api/getPokemonPage'
 import PokemonCard from './components/PokemonCard'
 import ErrorMessage from './components/ErrorMessage'
 import Modal from './components/Modal'
 import type { Pokemon } from './types/pokemon'
-
 
 function App() {
 
@@ -15,27 +16,33 @@ function App() {
   const [pokemonToSearch, setPokemonToSearch] = useState('')
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null)
 
-  const initialPokemonIds = [1, 4, 7, 25, 39, 52, 104, 132, 143, 150, 3, 6, 9, 12, 24, 29, 32, 35, 36, 42, 58, 63, 74, 87, 92, 99, 102, 108, 115, 117, 122, 133, 144, 149]
-
-
   const {data: searchData, error: searchError, isLoading: searchLoading} = useQuery({
     queryKey: ['getPokemon', pokemonToSearch],
     queryFn: () => getPokemon(pokemonToSearch),
     enabled: !!pokemonToSearch,
   })
 
-  const initialQueries = useQueries({
-    queries: initialPokemonIds.map(id => ({
-      queryKey: ['getPokemon', id.toString()],
-      queryFn: () => getPokemon(id.toString()),
-    }))
+  const {data: allPokemonData} = useQuery({
+    queryKey: ['getAllPokemon'],
+    queryFn: getAllPokemon,
   })
 
-  const initialPokemon = initialQueries
-    .filter(query => query.data)
-    .map(query => query.data)
-  const initialLoading = initialQueries.some(query => query.isLoading)
-  const initialError = initialQueries.some(query => query.error)
+  const { data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError
+  } = useInfiniteQuery({
+    queryKey: ['pokemonPages'],
+    queryFn: ({ pageParam }) => getPokemonPage(allPokemonData?.results || [], pageParam),
+    enabled: !!allPokemonData,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage: PokemonPage, pages: PokemonPage[]) => lastPage.hasMore ? pages.length : undefined,
+  })
+
+  const pokemon = data?.pages?.flatMap((page: PokemonPage) => page.pokemon) || []
+  const total = allPokemonData?.results?.length || 0
 
   return (
     <>
@@ -57,7 +64,6 @@ function App() {
         </div>
       </div>
       
-      {/* Search Results */}
       {searchLoading && <h3>Searching for Pokémon...</h3>} 
       {searchError && <ErrorMessage message={"Couldn't find Pokémon. Please try again"} />}
       {searchData && (
@@ -66,22 +72,46 @@ function App() {
         </div>
       )}
       
-      {/*Pokemon search results */}
       {!pokemonToSearch && (
         <>
-          {initialLoading && <h3>Loading Pokémon...</h3>}
-          {initialError && <ErrorMessage message={"Error loading Pokémon"} />}
-          {initialPokemon.length > 0 && (
-            <div className="pokemon-grid">
-              {initialPokemon.map((pokemon) => (
-                <PokemonCard key={pokemon.id} pokemon={pokemon} onClick={() => setSelectedPokemon(pokemon)} />
-              ))}
+          {isLoading && <h3>Loading Pokémon...</h3>}
+          {isError && !isLoading && (
+            <div style={{ textAlign: 'center', margin: '10px 0', color: '#666' }}>
+              <small>Some Pokémon failed to load</small>
             </div>
+          )}
+          {pokemon.length > 0 && (
+            <>
+              <div className="pokemon-grid">
+                {pokemon.map((p: Pokemon) => (
+                  <PokemonCard key={p.id} pokemon={p} onClick={() => setSelectedPokemon(p)} />
+                ))}
+              </div>
+              {hasNextPage && !isFetchingNextPage && (
+                <div style={{ textAlign: 'center', margin: '20px 0' }}>
+                  <button 
+                    onClick={() => fetchNextPage()}
+                    disabled={isFetchingNextPage}
+                    style={{
+                      padding: '12px 24px',
+                      backgroundColor: isFetchingNextPage ? '#ccc' : '#4A90E2',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '25px',
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      transition: 'background-color 0.2s'
+                    }}
+                  >
+                    {isFetchingNextPage ? 'Loading...' : `Load More Pokémon (${pokemon.length} of ${total})`}
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </>
       )}
       
-      {/* Modal */}
       <Modal pokemon={selectedPokemon} onClose={() => setSelectedPokemon(null)} />
     </>
   )
