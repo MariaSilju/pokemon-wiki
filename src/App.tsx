@@ -1,6 +1,6 @@
 import gjensidigmon from './assets/images/gjensidigmon.png'
 import './App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import getPokemon from './api/getPokemon'
 import getAllPokemon from './api/getAllPokemon'
@@ -16,6 +16,7 @@ function App() {
   const [inputText, setInputText] = useState('')
   const [pokemonToSearch, setPokemonToSearch] = useState('')
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null)
+  const [suggestion, setSuggestion] = useState('')
 
   const {data: searchData, error: searchError, isLoading: searchLoading} = useQuery({
     queryKey: ['getPokemon', pokemonToSearch],
@@ -45,6 +46,35 @@ function App() {
   const pokemon = data?.pages?.flatMap((page: PokemonPage) => page.pokemon) || []
   const total = allPokemonData?.results?.length || 0
 
+  const findFirstMatch = (input: string): string => {
+    if (!input || !allPokemonData?.results) return ''
+    
+    const lowerInput = input.toLowerCase()
+    const match = allPokemonData.results.find(pokemon => 
+      pokemon.name.toLowerCase().startsWith(lowerInput)
+    )
+    
+    return match ? match.name : ''
+  }
+
+  useEffect(() => {
+    const newSuggestion = findFirstMatch(inputText)
+    setSuggestion(newSuggestion)
+  }, [inputText, allPokemonData])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputText(e.target.value)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      const searchTerm = suggestion || inputText
+      if (searchTerm) {
+        setPokemonToSearch(searchTerm)
+      }
+    }
+  }
+
   return (
     <>
       <div className="header-container">
@@ -53,14 +83,23 @@ function App() {
             <img  src={gjensidigmon} alt="gjensidigmon"/>
           </div>
           <div className="search-container">
-            <input 
-              type="text"
-              placeholder="Search for a Pokemon..."
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && setPokemonToSearch(inputText)}
-            />
-            <button onClick={() => setPokemonToSearch(inputText)}>Search</button>
+            <div className="autocomplete-container">
+              <input 
+                type="text"
+                placeholder="Search for a Pokemon..."
+                value={inputText}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                className="search-input"
+              />
+              {suggestion && suggestion.toLowerCase().startsWith(inputText.toLowerCase()) && inputText.length > 0 && (
+                <div className="suggestion-overlay">
+                  <span className="typed-text">{inputText}</span>
+                  <span className="suggestion-text">{suggestion.slice(inputText.length)}</span>
+                </div>
+              )}
+            </div>
+            <button onClick={() => setPokemonToSearch(suggestion || inputText)}>Search</button>
           </div>
         </div>
       </div>
