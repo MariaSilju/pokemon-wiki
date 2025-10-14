@@ -37,18 +37,20 @@ function App() {
   return (
     <>
       <div className="header-container">
-        <div className="image-container">
-          <img  src={gjensidigmon} alt="gjensidigmon"/>
-        </div>
-        <div className="search-container">
-          <input 
-            type="text"
-            placeholder="Search for a Pokemon..."
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && setPokemonToSearch(inputText)}
-          />
-          <button onClick={() => setPokemonToSearch(inputText)}>Search</button>
+        <div className="header-content">
+          <div className="image-container">
+            <img  src={gjensidigmon} alt="gjensidigmon"/>
+          </div>
+          <div className="search-container">
+            <input 
+              type="text"
+              placeholder="Search for a Pokemon..."
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && setPokemonToSearch(inputText)}
+            />
+            <button onClick={() => setPokemonToSearch(inputText)}>Search</button>
+          </div>
         </div>
       </div>
       
