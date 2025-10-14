@@ -1,0 +1,34 @@
+.container {
+  margin-bottom: 36px;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 20px 0;
+  position: relative;
+  text-align: center;
+}
+
+.title::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #e9ecef;
+  z-index: 1;
+}
+
+.title span {
+  background-color: white;
+  padding: 0 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.content {
+  /* Content styling can be added here if needed */
+}

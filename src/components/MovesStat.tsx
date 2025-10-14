@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './MovesStat.module.css';
 import type { Pokemon } from "../types/pokemon";
 import ChevronIcon from '../assets/svg/chevron.svg';
+import SectionWrapper from './SectionWrapper';
 
 interface MovesStatProps {
   pokemon: Pokemon;
@@ -38,8 +39,7 @@ function MovesStat({ pokemon }: MovesStatProps) {
   };
 
   return (
-    <div className={styles.container}>
-      <h3 className={styles.title}>Moves (Level Up)</h3>
+    <SectionWrapper title="Moves (Level Up)">
       <div className={styles.moves}>
         {displayedMoves.map((move, index) => (
           <div key={index} className={styles.move}>
@@ -63,7 +63,7 @@ function MovesStat({ pokemon }: MovesStatProps) {
           />
         </button>
       )}
-    </div>
+    </SectionWrapper>
   );
 }
 
