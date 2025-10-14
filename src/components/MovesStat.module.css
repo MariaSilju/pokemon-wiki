@@ -13,43 +13,40 @@
 
 .moves {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.move {
-  background: linear-gradient(135deg, #ff7043 0%, #ff5722 50%, #e64a19 100%);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 12px;
-  font-weight: 600;
-  box-shadow: 0 3px 8px rgba(255, 87, 34, 0.3);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-  display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 4px;
 }
 
-.move:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
+.move {
+  background: transparent;
+  color: #333;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.moveMarker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #4A90E2;
+  flex-shrink: 0;
 }
 
 .moveName {
   text-transform: capitalize;
-  font-size: 0.8rem;
-  text-align: center;
-  line-height: 1.2;
+  font-size: 1rem;
+  font-weight: 600;
+  flex: 1;
+  text-align: left;
 }
 
 .moveMethod {
-  font-size: 0.7rem;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 2px 6px;
-  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #666;
   font-weight: 500;
+  margin-left: auto;
 }
 
 .toggleButton {

@@ -8,6 +8,8 @@ interface MovesStatProps {
 }
 
 
+const NR_OF_MOVES_TO_SHOW = 4;
+
 function MovesStat({ pokemon }: MovesStatProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   
@@ -28,9 +30,8 @@ function MovesStat({ pokemon }: MovesStatProps) {
       };
     });
 
-  // Show either 6 moves or all moves based on expanded state
-  const displayedMoves = isExpanded ? allLevelUpMoves : allLevelUpMoves.slice(0, 6);
-  const hasMoreMoves = allLevelUpMoves.length > 6;
+  const displayedMoves = isExpanded ? allLevelUpMoves : allLevelUpMoves.slice(0, NR_OF_MOVES_TO_SHOW);
+  const hasMoreMoves = allLevelUpMoves.length > NR_OF_MOVES_TO_SHOW;
 
   const toggleExpanded = () => {
     setIsExpanded(prev => !prev);
@@ -42,9 +43,10 @@ function MovesStat({ pokemon }: MovesStatProps) {
       <div className={styles.moves}>
         {displayedMoves.map((move, index) => (
           <div key={index} className={styles.move}>
+            <div className={styles.moveMarker}></div>
             <span className={styles.moveName}>{move.name}</span>
             <span className={styles.moveMethod}>
-              Lv. {move.level}
+              {"Lv. " + move.level}
             </span>
           </div>
         ))}
