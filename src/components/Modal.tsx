@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styles from './Modal.module.css';
 import type { Pokemon } from '../types/pokemon';
 import PokemonStat from './PokemonStat';
@@ -10,6 +11,25 @@ interface ModalProps {
 }
 
 function Modal({ pokemon, onClose }: ModalProps) {
+
+  useEffect(() => {
+    if (pokemon) {
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      const originalOverflow = document.body.style.overflow;
+      const originalPaddingRight = document.body.style.paddingRight;
+      
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+      
+      // Cleanup function to restore styles when modal closes
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.body.style.paddingRight = originalPaddingRight;
+      };
+    }
+  }, [pokemon]);
+
   if (!pokemon) return null;
 
   return (
