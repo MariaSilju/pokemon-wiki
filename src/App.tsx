@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import getPokemon from './api/getPokemon'
 import PokemonCard from './components/PokemonCard'
+import ErrorMessage from './components/ErrorMessage'
 
 
 function App() {
@@ -31,8 +32,8 @@ function App() {
         />
         <button onClick={() => setPokemonToSearch(inputText)}>Search</button>
       </div>
-      {isLoading && <div>Loading...</div>} 
-      {error && <div>Error: {error.message}</div>}
+      {isLoading && <h3>Searching for Pokémon...</h3>} 
+      {error && <ErrorMessage message={"Couldn't find Pokémon. Please try again"} />}
       {data && <PokemonCard pokemom={data} />}
     </>
   )
