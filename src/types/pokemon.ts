@@ -11,6 +11,18 @@ export interface PokemonAbility {
   is_hidden: boolean;
 }
 
+export interface PokemonMove {
+  move: {
+    name: string;
+  };
+  version_group_details: {
+    level_learned_at: number;
+    move_learn_method: {
+      name: string;
+    };
+  }[];
+}
+
 export interface Pokemon {
   name: string;
   id: number;
@@ -27,4 +39,5 @@ export interface Pokemon {
   };
   types: PokemonType[];
   abilities: PokemonAbility[];
+  moves: PokemonMove[];
 }

@@ -2,6 +2,7 @@ import styles from './Modal.module.css';
 import type { Pokemon } from '../types/pokemon';
 import PokemonStat from './PokemonStat';
 import AbilitiesStat from './AbilitiesStat';
+import MovesStat from './MovesStat';
 
 interface ModalProps {
   pokemon: Pokemon | null;
@@ -38,6 +39,7 @@ function Modal({ pokemon, onClose }: ModalProps) {
             ]}
           />
           <AbilitiesStat pokemon={pokemon}/>
+          <MovesStat pokemon={pokemon}/>
         </div>
       </div>
     </div>
