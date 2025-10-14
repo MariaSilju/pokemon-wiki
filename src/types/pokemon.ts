@@ -1,6 +1,8 @@
 export interface Pokemon {
   name: string;
   id: number;
+  height: number;
+  weight: number;
   sprites: {
     official_artwork: string;
     front_default: string;

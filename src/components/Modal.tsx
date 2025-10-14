@@ -1,5 +1,6 @@
 import styles from './Modal.module.css';
 import type { Pokemon } from '../types/pokemon';
+import PokemonStat from './PokemonStat';
 
 interface ModalProps {
   pokemon: Pokemon | null;
@@ -28,6 +29,13 @@ function Modal({ pokemon, onClose }: ModalProps) {
               </span>
             ))}
           </div>
+
+          <PokemonStat 
+            stats={[
+              { title: 'Height', subtitle: `${(pokemon.height / 10).toFixed(1)} m` },
+              { title: 'Weight', subtitle: `${(pokemon.weight / 10).toFixed(1)} kg` }
+            ]}
+          />
         </div>
       </div>
     </div>
