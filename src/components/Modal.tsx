@@ -5,6 +5,38 @@ import PokemonStat from './PokemonStat';
 import AbilitiesStat from './AbilitiesStat';
 import MovesStat from './MovesStat';
 
+const typeColors: Record<string, string> = {
+  normal: '#A8A878',
+  fire: '#F08030',
+  water: '#6890F0',
+  electric: '#F8D030',
+  grass: '#78C850',
+  ice: '#98D8D8',
+  fighting: '#C03028',
+  poison: '#A040A0',
+  ground: '#E0C068',
+  flying: '#A890F0',
+  psychic: '#F85888',
+  bug: '#A8B820',
+  rock: '#B8A038',
+  ghost: '#705898',
+  dragon: '#7038F8',
+  dark: '#705848',
+  steel: '#B8B8D0',
+  fairy: '#EE99AC'
+};
+
+function getTypeGradient(types: string[]): string {
+  if (types.length === 1) {
+    const color = typeColors[types[0]] || '#A8A878';
+    return `radial-gradient(circle, ${color}, ${color}88)`;
+  } else {
+    const color1 = typeColors[types[0]] || '#A8A878';
+    const color2 = typeColors[types[1]] || '#A8A878';
+    return `radial-gradient(circle, ${color1}, ${color2})`;
+  }
+}
+
 interface ModalProps {
   pokemon: Pokemon | null;
   onClose: () => void;
@@ -40,6 +72,10 @@ function Modal({ pokemon, onClose }: ModalProps) {
         </button>
         <div className={styles.content}>
           <div className={styles.imageWrapper}>
+            <div 
+              className={styles.gradientBackground}
+              style={{ background: getTypeGradient(pokemon.types.map(t => t.type.name)) }}
+            ></div>
             <img className={styles.image} src={pokemon.sprites.other['official-artwork'].front_default} alt={pokemon.name} />
           </div>
           <h2>{pokemon.name}</h2>
