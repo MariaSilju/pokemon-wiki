@@ -4,6 +4,13 @@ export interface PokemonType {
   }
 }
 
+export interface PokemonAbility {
+  ability: {
+    name: string;
+  };
+  is_hidden: boolean;
+}
+
 export interface Pokemon {
   name: string;
   id: number;
@@ -19,4 +26,5 @@ export interface Pokemon {
     };
   };
   types: PokemonType[];
+  abilities: PokemonAbility[];
 }
