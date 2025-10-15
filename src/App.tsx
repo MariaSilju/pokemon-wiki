@@ -78,12 +78,19 @@ function App() {
     }
   }
 
+  const handleLogoClick = () => {
+    setInputText('')
+    setPokemonToSearch('')
+    setSelectedPokemon(null)
+    setSuggestion('')
+  }
+
   return (
     <>
       <div className="header-container">
         <div className="header-content">
           <div className="image-container">
-            <img  src={gjensidigmon} alt="gjensidigmon"/>
+            <img  src={gjensidigmon} alt="gjensidigmon" onClick={handleLogoClick} style={{cursor: 'pointer'}}/>
           </div>
           <div className="search-container">
             <div className="autocomplete-container">
