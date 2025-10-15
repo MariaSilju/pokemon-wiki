@@ -70,6 +70,7 @@ function App() {
     if (e.key === 'Enter') {
       const searchTerm = suggestion || inputText
       if (searchTerm) {
+        setInputText(searchTerm) 
         setPokemonToSearch(searchTerm)
       } else {
         setPokemonToSearch('')
@@ -103,7 +104,12 @@ function App() {
             </div>
             <button onClick={() => {
               const searchTerm = suggestion || inputText
-              setPokemonToSearch(searchTerm || '')
+              if (searchTerm) {
+                setInputText(searchTerm) 
+                setPokemonToSearch(searchTerm)
+              } else {
+                setPokemonToSearch('')
+              }
             }}>Search</button>
           </div>
         </div>
